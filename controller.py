@@ -18,7 +18,7 @@ directory = ''
 #configuration parameters.
 GA_Iterations=51
 
-dfType = 2 # 1: run datafile by min   2:run datafile by day 3: run datafile by hour
+dfType = 3 # 1: run datafile by min   2:run datafile by day 3: run datafile by hour
 if dfType == 1:
     num_of_groups = 69
     parsed = pd.read_excel(os.path.join(directory,'data/FCPO_6_years_NUS_Parsed.xlsx'))
@@ -30,12 +30,12 @@ elif dfType == 3:
     parsed = pd.read_excel(os.path.join(directory,'data/FCPO_6_years_NUS_ParsedByHour.xlsx'))    
 
 print('--------------')
-print("Total number of indexes",len(parsed))
+print("Total number of indexes: ",len(parsed))
 groupSize = int(len(parsed)/num_of_groups)
 subGroupSize = int(groupSize/4)
 groupLength = int(len(parsed)/subGroupSize) - 3
-print("Group size",groupSize)
-print("SubGroup size",subGroupSize)
+print("Group size: ",groupSize)
+print("SubGroup size: ",subGroupSize)
 print('--------------')
 
 y1=0
@@ -43,9 +43,9 @@ y2=0
 y3=0
 y4=0
 
-for i in range (0,groupLength):
+for i in range (0,groupLength-1):
     Collection = genetic_algo.generate_collection(20, 10, genetic_algo.rule_choices)
-    print("Begin of group ",i+1,datetime.datetime.now())
+    print("Begin of group: ",i+1,datetime.datetime.now())
     y1 = subGroupSize*9
     # yTmp = y1 + subGroupSize
     # y2 = yTmp + subGroupSize
@@ -81,5 +81,4 @@ for i in range (0,groupLength):
     Collection = BestIndividual
     FF =FitnessFunction.FitnessFunction(y3,y4,parsed,Collection,flogic)
     totalAsset = FF.getTotalAsset()
-    print("End of group ",i+1,datetime.datetime.now())
-    
+    print("End of group: ",i+1,datetime.datetime.now())
